@@ -28,4 +28,4 @@ for i in range(100000):
     #         x=int(raw.x * 10),
     #         y=-int(raw.y * 10),
     #     )
-    print(raw.x, raw.y)  # For data ploting
+    print(raw.x, raw.z)  # For data ploting

@@ -194,7 +194,7 @@ class TouchWheelPhysics:
     ):
         # touch pads
         self.pads = [up, down, left, right, center]
-        # find range of touch pads
+        # range of touch pads
         if pad_max is None or pad_min is None:
             start_time = monotonic()
             pad_max = [0] * 5
@@ -219,7 +219,7 @@ class TouchWheelPhysics:
         # direction constants
         self.alter_x = [0, 0, -1, 1, 0]
         self.alter_y = [1, -1, 0, 0, 0]
-        self.alter_z = [0, 0, 0, 0, 1]
+        self.alter_z = [1, 1, 1, 1, 1]
 
         # states
         self.filter_level = 1  # not more than 2
@@ -247,9 +247,7 @@ class TouchWheelPhysics:
         self.z.now = sum([w[i] * self.alter_z[i] for i in range(5)])
         # conver to polar axis
         self.r.now = sqrt(self.x.now**2 + self.y.now**2)
-        self.l.now = sqrt(self.r.now**2 + self.z.now**2)
         self.theta.now = atan2(self.y.now, self.x.now)
-        self.phi.now = atan2(self.z.now, self.r.now)
 
         return Dict2Obj(
             {
@@ -258,8 +256,6 @@ class TouchWheelPhysics:
                 "z": self.z.now,
                 "r": self.r.now,
                 "theta": self.theta.now,
-                "l": self.l.now,
-                "phi": self.phi.now,
             }
         )
 
@@ -271,6 +267,7 @@ class TouchWheelNavigationEvents:
         N=8,
         thr_upper=0.8,
         thr_lower=0.6,
+        thr_r=0.3,
         thr_deg=45,
     ):
         self.wheel = wheel
@@ -278,6 +275,7 @@ class TouchWheelNavigationEvents:
         self.thr_upper = thr_upper
         self.thr_lower = thr_lower
         self.thr = self.thr_upper
+        self.thr_r = thr_r
         self.thr_rad = thr_deg / 180 * pi
 
         self.any = State(id="any")
@@ -297,11 +295,9 @@ class TouchWheelNavigationEvents:
         # get physical value
         self.phy = self.wheel.get()
         # touch detect
-        self.any.now = int(self.phy.l > self.thr)
-        self.ring.now = int(self.phy.r > self.thr)
-        self.center.now = (
-            int(abs(theta_diff(pi / 2, self.phy.phi)) < self.thr_rad) & self.any.now
-        )
+        self.any.now = int(self.phy.z > self.thr)
+        self.ring.now = int(self.phy.r > self.thr_r) & self.any.now
+        self.center.now = int(self.phy.r < self.thr_r) & self.any.now
         self.up.now = (
             int(abs(theta_diff(pi / 2, self.phy.theta)) < self.thr_rad) & self.ring.now
         )

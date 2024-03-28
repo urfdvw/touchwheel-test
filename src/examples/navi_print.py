@@ -21,7 +21,7 @@ License: GPL3
 Github: https://github.com/urfdvw
 Email: urfdvw@gmail.com
 """
-
+from time import sleep
 import board
 import touchio
 from touchwheel import TouchWheelPhysics, TouchWheelNavigationEvents
@@ -44,6 +44,7 @@ navi_events = TouchWheelNavigationEvents(
 
 dial_position = 0
 for i in range(100000):
+    sleep(0.05)
     event = navi_events.get()
     if event:
         print(event)
