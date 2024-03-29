@@ -19,7 +19,7 @@ wheel_phy = TouchWheelPhysics(
     pad_min=[904, 1239, 862, 879, 910],
 )
 
-print("startplot:", "x", "y")  # For data ploting
+print("startplot:", "z")  # For data ploting
 for i in range(100000):
     sleep(0.05)
     raw = wheel_phy.get()
@@ -28,4 +28,4 @@ for i in range(100000):
     #         x=int(raw.x * 10),
     #         y=-int(raw.y * 10),
     #     )
-    print(raw.x, raw.z)  # For data ploting
+    print(raw.z)  # For data ploting

@@ -265,8 +265,8 @@ class TouchWheelNavigationEvents:
         self,
         wheel,
         N=8,
-        thr_upper=0.8,
-        thr_lower=0.6,
+        thr_upper=1.0,
+        thr_lower=0.9,
         thr_r=0.3,
         thr_deg=45,
     ):

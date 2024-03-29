@@ -44,9 +44,9 @@ print("startplot:", "x", "y")  # For data ploting
 for i in range(100000):
     sleep(0.01)
     raw = wheel_phy.get()
-    if wheel_phy.l.now > 0.8:
+    if wheel_phy.z.now > 0.8:
         mouse.move(
             x=int(raw.x * 10),
             y=-int(raw.y * 10),
         )
-    print(raw.x, raw.y)  # For data ploting
+    # print(raw.x, raw.y)  # For data ploting
